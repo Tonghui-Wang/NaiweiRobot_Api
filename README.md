@@ -9,40 +9,40 @@
 |1|Connect|创建连接|✅|✅|
 |2|DisConnect|断开连接|✅|✅|
 |3|IsConnected|查询连接|✅|✅|
-|4|Power|使能控制|✅|❎|
-|5|SetOpMode|设置操作模式|✅|❎|
-|6|GetOpMode|查询操作模式|✅|❎|
-|7|Jog|手动模式点动运动|✅|❎|
-|8|Move|手动模式定位运动|✅|❎|
-|9|Task|任务文件切换|✅|❎|
-|10|SetAutoMode|设置自动执行模式|✅|❎|
-|11|GetAutoMode|查询自动执行模式|✅|❎|
-|12|GetAutoStatus|查询自动执行状态|✅|❎|
-|13|MotionStart|自动模式执行启动|✅|❎|
-|14|MotionPause|自动模式执行暂停|✅|❎|
-|15|MotionStop|自动模式执行停止|✅|❎|
-|16|GetError|查询报错编号|✅|❎|
-|17|ResetError|设置报错复位|✅|❎|
-|18|SetGlobalSpeed|设置全局速率|✅|❎|
-|19|GetGlobalSpeed|查询全局速率|✅|❎|
-|20|SetCs|设置坐标系类型|✅|❎|
-|21|GetCs|查询坐标系类型|✅|❎|
-|22|GetCurJPos|查询当前关节坐标|✅|❎|
-|23|GetCurCPos|查询当前笛卡尔坐标|✅|❎|
-|24|SetPos|设置目标点坐标|✅|❎|
-|25|GetPos|查询目标点坐标|✅|❎|
-|26|SetIo|设置多个连续IO端口|✅|❎|
-|27|GetIo|查询多个连续IO端口|✅|❎|
-|28|SetFixDo|设置多个指定IO端口|✅|❎|
-|29|GetFixDo|查询多个指令IO端口|✅|❎|
-|30|SetBool|设置多个连续布尔变量|✅|❎|
-|31|GetBool|查询多个连续布尔变量|✅|❎|
-|32|SetInt|设置多个连续整型变量|✅|❎|
-|33|GetInt|查询多个连续整型变量|✅|❎|
-|34|SetReal|设置多个连续浮点变量|✅|❎|
-|35|SetReal|查询多个连续浮点变量|✅|❎|
+|4|Power|使能控制|✅|✅|
+|5|SetOpMode|设置操作模式|✅|✅|
+|6|GetOpMode|查询操作模式|✅|✅|
+|7|Jog|手动模式点动运动|✅|✅|
+|8|Move|手动模式定位运动|✅|✅|
+|9|Task|任务文件切换|✅|✅|
+|10|SetAutoMode|设置自动执行模式|✅|✅|
+|11|GetAutoMode|查询自动执行模式|✅|✅|
+|12|GetAutoStatus|查询自动执行状态|✅|✅|
+|13|MotionStart|自动模式执行启动|✅|✅|
+|14|MotionPause|自动模式执行暂停|✅|✅|
+|15|MotionStop|自动模式执行停止|✅|✅|
+|16|GetError|查询报错编号|✅|✅|
+|17|ResetError|设置报错复位|✅|✅|
+|18|SetGlobalSpeed|设置全局速率|✅|✅|
+|19|GetGlobalSpeed|查询全局速率|✅|✅|
+|20|SetCs|设置坐标系类型|✅|✅|
+|21|GetCs|查询坐标系类型|✅|✅|
+|22|GetCurJPos|查询当前关节坐标|✅|✅|
+|23|GetCurCPos|查询当前笛卡尔坐标|✅|✅|
+|24|SetPos|设置目标点坐标|✅|✅|
+|25|GetPos|查询目标点坐标|✅|✅|
+|26|SetIo|设置多个连续IO端口|✅|✅|
+|27|GetIo|查询多个连续IO端口|✅|✅|
+|28|SetFixDo|设置多个指定IO端口|✅|✅|
+|29|GetFixDo|查询多个指令IO端口|✅|✅|
+|30|SetBool|设置多个连续布尔变量|✅|✅|
+|31|GetBool|查询多个连续布尔变量|✅|✅|
+|32|SetInt|设置多个连续整型变量|✅|✅|
+|33|GetInt|查询多个连续整型变量|✅|✅|
+|34|SetReal|设置多个连续浮点变量|✅|✅|
+|35|GetReal|查询多个连续浮点变量|✅|✅|
 
 ### Todo：  
-- C++版本还有众多功能待编写完成
+- C++版本语法错误修复
 - 进行效果实测
 - 增加接口功能，助开发者实现更灵活调用
