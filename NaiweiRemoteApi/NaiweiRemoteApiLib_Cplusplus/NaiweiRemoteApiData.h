@@ -7,7 +7,7 @@ namespace NaiweiRobot
     /// <summary>
     /// 操作模式枚举
     /// </summary>
-    enum class OpModeType : int16_t
+    enum OpModeType : int16_t
     {
         Manual = 0,//手动模式
         Auto = 1,//自动模式
@@ -17,7 +17,7 @@ namespace NaiweiRobot
     /// <summary>
     /// 坐标类型枚举
     /// </summary>
-    enum class CsType : uint16_t
+    enum CsType : uint16_t
     {
         Jcs = 0,//关节空间坐标系
         Wcs = 1//笛卡尔空间坐标系(以机器人基坐标系为准)
@@ -26,7 +26,7 @@ namespace NaiweiRobot
     /// <summary>
     /// 变量作用域枚举
     /// </summary>
-    enum class ScopeType : uint16_t
+    enum ScopeType : uint16_t
     {
         Local = 0,//局部变量
         Global = 1//全局变量
@@ -35,7 +35,7 @@ namespace NaiweiRobot
     /// <summary>
     /// 变量类型枚举
     /// </summary>
-    enum class VarType : uint16_t
+    enum VarType : uint16_t
     {
         LJ = 0,//局部关节坐标
         LP = 1,//局部空间坐标
@@ -53,7 +53,7 @@ namespace NaiweiRobot
     /// <summary>
     /// IO类型枚举
     /// </summary>
-    enum class IOType : uint16_t
+    enum IOType : uint16_t
     {
         DI = 0,//数据输入
         DO = 1,//数字输出
@@ -74,7 +74,7 @@ namespace NaiweiRobot
     /// 如：MX123.7 记为 （123<<16 | 7）
     /// 如：MB234   记为 （234<<16 | 65535）
     /// </summary>
-    enum class Address : int32_t
+    enum Address : int32_t
     {
         PlaceHolder = 0,
 

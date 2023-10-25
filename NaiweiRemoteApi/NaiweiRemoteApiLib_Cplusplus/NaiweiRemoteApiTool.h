@@ -8,31 +8,27 @@
 
 class NAIWEIREMOTEAPITOOL_API NaiweiRemoteApiTool
 {
-private:
-	uint16_t* AddressConvert(NaiweiRobot::Address address);
+public:
+	static uint16_t* AddressConvert(NaiweiRobot::Address address);
 
 	template<typename T>
-	T* Ushort2T(uint16_t* source, bool* sign)
+	static int Ushort2T(uint16_t* source, T* dest)
 	{
-		sign = false;
+		//T* dest = (T*)malloc(sizeof(source));
+		memcpy(dest, source, sizeof(source));
 
-		T* ret;
-		memcpy(ret, source, sizeof(source));
-
-		return ret;
+		return 1;
 	}
 
 	template<typename T>
-	uint16_t* T2Ushort(T* source, bool* sign)
+	static int T2Ushort(T* source, uint16_t* dest)
 	{
-		sign = false;
+		//uint16_t* dest = (T*)malloc(sizeof(source));
+		memcpy(dest, source, sizeof(source));
 
-		uint16_t* ret;
-		memcpy(ret, source, sizeof(source));
-
-		return ret;
+		return 1;
 	}
 
-	void SetBit(uint16_t* value, uint16_t index, bool status);
-	bool GetBit(uint16_t value, uint16_t index);
+	static void SetBit(uint16_t* value, uint16_t index, bool status);
+	static bool GetBit(uint16_t value, uint16_t index);
 };

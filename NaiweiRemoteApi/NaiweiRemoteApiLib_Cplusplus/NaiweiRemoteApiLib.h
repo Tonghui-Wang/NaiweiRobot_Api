@@ -17,7 +17,7 @@ class NAIWEIREMOTEAPILIB_API NaiweiRemoteApiLib
 	void Power(bool enable = true);
 
 	bool SetOpMode(NaiweiRobot::OpModeType mode);
-	NaiweiRobot::OpModeType GetOpMode(bool& sign);
+	NaiweiRobot::OpModeType GetOpMode(bool* sign);
 
 	void Jog(unsigned short index, short direction, bool enable = true);
 	void Move(NaiweiRobot::VarType type, unsigned short index, bool enable);
@@ -41,35 +41,21 @@ class NAIWEIREMOTEAPILIB_API NaiweiRemoteApiLib
 	bool SetCs(NaiweiRobot::CsType cs);
 	NaiweiRobot::CsType GetCs();
 
-	std::unique_ptr<float[]> GetCurJPos();
-	std::unique_ptr<float[]> GetCurCPos();
-	bool SetPos(NaiweiRobot::VarType type, unsigned short index, std::vector<float> value);
-	std::unique_ptr<float[]> GetPos(NaiweiRobot::VarType type, unsigned short index, bool& sign);
+	float* GetCurJPos();
+	float* GetCurCPos();
+	bool SetPos(NaiweiRobot::VarType type, unsigned short index, float* value);
+	float* GetPos(NaiweiRobot::VarType type, unsigned short index, bool* sign);
 
-	bool SetIo(unsigned short index, std::vector<bool> value, NaiweiRobot::IOType type = NaiweiRobot::IOType::DO);
-	std::unique_ptr<bool[]> GetIo(NaiweiRobot::IOType type, unsigned short index, unsigned short num, bool& sign);
-	bool SetFixDo(std::vector<int> indexs, bool value = true);
-	std::unique_ptr<bool[]> GetFixDo(std::vector<int> index, bool& sign);
-	bool SetBool(unsigned short index, std::vector<bool> value, NaiweiRobot::ScopeType scope = NaiweiRobot::ScopeType::Global);
-	std::unique_ptr<bool[]> GetBool(unsigned short index, unsigned short num, bool& sign, NaiweiRobot::ScopeType scope = NaiweiRobot::ScopeType::Global);
-	bool SetInt(unsigned short index, std::vector<short> value, NaiweiRobot::ScopeType scope = NaiweiRobot::ScopeType::Global);
-	std::unique_ptr<short[]> GetInt(unsigned short index, unsigned short num, bool& sign, NaiweiRobot::ScopeType scope = NaiweiRobot::ScopeType::Global);
-	bool SetReal(unsigned short index, std::vector<float> value, NaiweiRobot::ScopeType scope = NaiweiRobot::ScopeType::Global);
-	std::unique_ptr<float[]> GetReal(unsigned short index, unsigned short num, bool& sign, NaiweiRobot::ScopeType scope = NaiweiRobot::ScopeType::Global);
-
-	bool SetIOValue(int IoIndex, NaiweiRobot::IOType IoType, std::vector<double> dataIn);
-	bool GetIOValue(int IoIndex, NaiweiRobot::IOType IoType, int IoNum, std::vector<double>& dataOut);
-	bool SetMultiDO(std::vector<int> IoValues);
-	bool SetVarValue(NaiweiRobot::VarType varType, std::string varName, std::string varValue, NaiweiRobot::ScopeType varScope);
-	bool GetVarValue(NaiweiRobot::VarType varType, std::string varName, NaiweiRobot::ScopeType varScope, std::string & valueBack);
-	bool SetInt(std::string varName, NaiweiRobot::ScopeType varScope, int & valueBack);
-	bool WriteInt(std::string varName, NaiweiRobot::ScopeType varScope, int value);
-	bool ReadReal(std::string varName, NaiweiRobot::ScopeType varScope, double & valueBack);
-	bool WriteReal(std::string varName, NaiweiRobot::ScopeType varScope, double value);
-	bool ReadStr(std::string varName, NaiweiRobot::ScopeType varScope, std::string& valueBack);
-	bool WriteStr(std::string varName, NaiweiRobot::ScopeType varScope, std::string value);
-	bool ReadPos(std::string varName, NaiweiRobot::ScopeType varScope, NaiweiRobot::ROB_POS& valueBack);
-	bool WritePos(std::string varName, NaiweiRobot::ScopeType varScope, NaiweiRobot::ROB_POS value);
+	bool SetIo(unsigned short index, bool* value, NaiweiRobot::IOType type = NaiweiRobot::IOType::DO);
+	bool* GetIo(NaiweiRobot::IOType type, unsigned short index, unsigned short num, bool* sign);
+	bool SetFixDo(int* indexs, bool value = true);
+	bool* GetFixDo(int* index, bool* sign);
+	bool SetBool(unsigned short index, bool* value, NaiweiRobot::ScopeType scope = NaiweiRobot::ScopeType::Global);
+	bool* GetBool(unsigned short index, unsigned short num, bool* sign, NaiweiRobot::ScopeType scope = NaiweiRobot::ScopeType::Global);
+	bool SetInt(unsigned short index, short* value, NaiweiRobot::ScopeType scope = NaiweiRobot::ScopeType::Global);
+	short* GetInt(unsigned short index, unsigned short num, bool* sign, NaiweiRobot::ScopeType scope = NaiweiRobot::ScopeType::Global);
+	bool SetReal(unsigned short index, float* value, NaiweiRobot::ScopeType scope = NaiweiRobot::ScopeType::Global);
+	float* GetReal(unsigned short index, unsigned short num, bool* sign, NaiweiRobot::ScopeType scope = NaiweiRobot::ScopeType::Global);
 
 //private:
 	modbus_t* mbclient_;
