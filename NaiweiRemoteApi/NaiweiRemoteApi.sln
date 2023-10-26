@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NaiweiRemoteApiLib_Cplusplu
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NaiweiRemoteApiLib_Csharp", "NaiweiRemoteApiLib_Csharp\NaiweiRemoteApiLib_Csharp.csproj", "{5670D46C-7778-4E65-AE2F-8CD350E7FAB9}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "testcplusplus", "testcplusplus\testcplusplus.vcxproj", "{924FAC17-DAD1-4541-9269-9D44619C1E2D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -41,6 +43,18 @@ Global
 		{5670D46C-7778-4E65-AE2F-8CD350E7FAB9}.Release|x64.Build.0 = Release|Any CPU
 		{5670D46C-7778-4E65-AE2F-8CD350E7FAB9}.Release|x86.ActiveCfg = Release|Any CPU
 		{5670D46C-7778-4E65-AE2F-8CD350E7FAB9}.Release|x86.Build.0 = Release|Any CPU
+		{924FAC17-DAD1-4541-9269-9D44619C1E2D}.Debug|Any CPU.ActiveCfg = Debug|x64
+		{924FAC17-DAD1-4541-9269-9D44619C1E2D}.Debug|Any CPU.Build.0 = Debug|x64
+		{924FAC17-DAD1-4541-9269-9D44619C1E2D}.Debug|x64.ActiveCfg = Debug|x64
+		{924FAC17-DAD1-4541-9269-9D44619C1E2D}.Debug|x64.Build.0 = Debug|x64
+		{924FAC17-DAD1-4541-9269-9D44619C1E2D}.Debug|x86.ActiveCfg = Debug|Win32
+		{924FAC17-DAD1-4541-9269-9D44619C1E2D}.Debug|x86.Build.0 = Debug|Win32
+		{924FAC17-DAD1-4541-9269-9D44619C1E2D}.Release|Any CPU.ActiveCfg = Release|x64
+		{924FAC17-DAD1-4541-9269-9D44619C1E2D}.Release|Any CPU.Build.0 = Release|x64
+		{924FAC17-DAD1-4541-9269-9D44619C1E2D}.Release|x64.ActiveCfg = Release|x64
+		{924FAC17-DAD1-4541-9269-9D44619C1E2D}.Release|x64.Build.0 = Release|x64
+		{924FAC17-DAD1-4541-9269-9D44619C1E2D}.Release|x86.ActiveCfg = Release|Win32
+		{924FAC17-DAD1-4541-9269-9D44619C1E2D}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

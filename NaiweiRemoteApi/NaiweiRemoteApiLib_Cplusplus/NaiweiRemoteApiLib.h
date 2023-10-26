@@ -7,10 +7,15 @@
 #define NAIWEIREMOTEAPILIB_API __declspec(dllimport)
 #endif
 
+#include "NaiweiRemoteApiData.h"
+#include "ModbusLib/modbus.h"
+#include <string>
+
 class NAIWEIREMOTEAPILIB_API NaiweiRemoteApiLib
 {
-	bool Connect(std::string ip, int port = 502, bool isAutoReConnect = false);
-	bool Connect(std::string& port, int baudrate, char parity, int byteBit, int stopBit);
+public:
+	bool Connect(std::string ip, std::int32_t port = 502, bool isAutoReConnect = false);
+	bool Connect(std::string& port, std::int32_t baudrate, char parity, std::int32_t byteBit, std::int32_t stopBit);
 	bool DisConnect();
 	bool IsConnected();
 
@@ -19,14 +24,14 @@ class NAIWEIREMOTEAPILIB_API NaiweiRemoteApiLib
 	bool SetOpMode(NaiweiRobot::OpModeType mode);
 	NaiweiRobot::OpModeType GetOpMode(bool* sign);
 
-	void Jog(unsigned short index, short direction, bool enable = true);
-	void Move(NaiweiRobot::VarType type, unsigned short index, bool enable);
+	void Jog(uint16_t index, short direction, bool enable = true);
+	void Move(NaiweiRobot::VarType type, uint16_t index, bool enable);
 
-	bool Task(unsigned short num);
+	bool Task(uint16_t num);
 
-	bool SetAutoMode(unsigned short value);
-	unsigned short GetAutoMode();
-	unsigned short GetAutoStatus();
+	bool SetAutoMode(uint16_t value);
+	uint16_t GetAutoMode();
+	uint16_t GetAutoStatus();
 
 	bool MotionStart(bool enable);
 	bool MotionPause(bool enable);
@@ -35,29 +40,29 @@ class NAIWEIREMOTEAPILIB_API NaiweiRemoteApiLib
 	int GetError();
 	void ResetError(bool enable = true);
 
-	bool SetGlobalSpeed(unsigned short value);
-	unsigned short GetGlobalSpeed();
+	bool SetGlobalSpeed(uint16_t value);
+	uint16_t GetGlobalSpeed();
 
 	bool SetCs(NaiweiRobot::CsType cs);
 	NaiweiRobot::CsType GetCs();
 
 	float* GetCurJPos();
 	float* GetCurCPos();
-	bool SetPos(NaiweiRobot::VarType type, unsigned short index, float* value);
-	float* GetPos(NaiweiRobot::VarType type, unsigned short index, bool* sign);
+	bool SetPos(NaiweiRobot::VarType type, uint16_t index, float* value);
+	float* GetPos(NaiweiRobot::VarType type, uint16_t index, bool* sign);
 
-	bool SetIo(unsigned short index, bool* value, NaiweiRobot::IOType type = NaiweiRobot::IOType::DO);
-	bool* GetIo(NaiweiRobot::IOType type, unsigned short index, unsigned short num, bool* sign);
+	bool SetIo(uint16_t index, bool* value, NaiweiRobot::IOType type = NaiweiRobot::IOType::DO);
+	bool* GetIo(NaiweiRobot::IOType type, uint16_t index, uint16_t num, bool* sign);
 	bool SetFixDo(int* indexs, bool value = true);
 	bool* GetFixDo(int* index, bool* sign);
-	bool SetBool(unsigned short index, bool* value, NaiweiRobot::ScopeType scope = NaiweiRobot::ScopeType::Global);
-	bool* GetBool(unsigned short index, unsigned short num, bool* sign, NaiweiRobot::ScopeType scope = NaiweiRobot::ScopeType::Global);
-	bool SetInt(unsigned short index, short* value, NaiweiRobot::ScopeType scope = NaiweiRobot::ScopeType::Global);
-	short* GetInt(unsigned short index, unsigned short num, bool* sign, NaiweiRobot::ScopeType scope = NaiweiRobot::ScopeType::Global);
-	bool SetReal(unsigned short index, float* value, NaiweiRobot::ScopeType scope = NaiweiRobot::ScopeType::Global);
-	float* GetReal(unsigned short index, unsigned short num, bool* sign, NaiweiRobot::ScopeType scope = NaiweiRobot::ScopeType::Global);
+	bool SetBool(uint16_t index, bool* value, NaiweiRobot::ScopeType scope = NaiweiRobot::ScopeType::Global);
+	bool* GetBool(uint16_t index, uint16_t num, bool* sign, NaiweiRobot::ScopeType scope = NaiweiRobot::ScopeType::Global);
+	bool SetInt(uint16_t index, short* value, NaiweiRobot::ScopeType scope = NaiweiRobot::ScopeType::Global);
+	short* GetInt(uint16_t index, uint16_t num, bool* sign, NaiweiRobot::ScopeType scope = NaiweiRobot::ScopeType::Global);
+	bool SetReal(uint16_t index, float* value, NaiweiRobot::ScopeType scope = NaiweiRobot::ScopeType::Global);
+	float* GetReal(uint16_t index, uint16_t num, bool* sign, NaiweiRobot::ScopeType scope = NaiweiRobot::ScopeType::Global);
 
-//private:
+private:
 	modbus_t* mbclient_;
 };
 

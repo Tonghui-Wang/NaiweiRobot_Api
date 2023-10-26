@@ -1,11 +1,9 @@
 // NaiweiRemoteApiLib.cpp : Defines the exported functions for the DLL.
 #include "pch.h" // use stdafx.h in Visual Studio 2017 and earlier
 #include "NaiweiRemoteApiLib.h"
-#include "NaiweiRemoteApiData.h"
 #include "NaiweiRemoteApiTool.h"
 #include "ModbusLib/modbus.h"
 #include <string>
-#include <vector>
 #include <memory>
 
 bool NaiweiRemoteApiLib::Connect(std::string ip, int port, bool isAutoReConnect)
@@ -92,7 +90,7 @@ bool NaiweiRemoteApiLib::SetOpMode(NaiweiRobot::OpModeType mode)
 	if (-1 == modbus_get_socket(mbclient_)) return false;
 
 	auto reg = NaiweiRemoteApiTool::AddressConvert(NaiweiRobot::Address::OpMode);
-	auto res = modbus_write_register(mbclient_, reg[0], mode);
+	auto res = modbus_write_register(mbclient_, reg[0], static_cast<uint16_t>(mode));
 
 	return -1 == res ? false : true;
 }
@@ -103,7 +101,8 @@ NaiweiRobot::OpModeType GetOpMode(bool* sign)
 	if (-1 == modbus_get_socket(mbclient_)) return ans;
 
 	auto reg = NaiweiRemoteApiTool::AddressConvert(NaiweiRobot::Address::OpMode);
-	auto res = modbus_read_registers(mbclient_, reg[0], 1, &ans);
+	auto data = static_cast<uint16_t>(ans);
+	auto res = modbus_read_registers(mbclient_, reg[0], 1, &data);
 
 	return -1 == res ? NaiweiRobot::OpModeType::Manual : ans;
 }
@@ -158,10 +157,10 @@ bool NaiweiRemoteApiLib::Task(uint16_t num)
 	if (-1 == modbus_get_socket(mbclient_)) return false;
 
 	auto reg = NaiweiRemoteApiTool::AddressConvert(NaiweiRobot::Address::OpMode);
-	NaiweiRobot::OpModeType data;
+	uint16_t data;
 	auto res = modbus_read_registers(mbclient_, reg[0], 1, &data);
 	if (-1 == res) return false;
-	if (NaiweiRobot::OpModeType::Manual != data) return false;
+	if (static_cast<uint16_t>(NaiweiRobot::OpModeType::Manual) != data) return false;
 
 	reg = NaiweiRemoteApiTool::AddressConvert(NaiweiRobot::Address::TaskNumNow);
 	res = modbus_write_register(mbclient_, reg[0], num);
@@ -326,13 +325,14 @@ bool NaiweiRemoteApiLib::SetCs(NaiweiRobot::CsType cs)
 
 NaiweiRobot::CsType NaiweiRemoteApiLib::GetCs()
 {
-	NaiweiRobot::CsType data = NaiweiRobot::CsType::Jcs;
-	if (-1 == modbus_get_socket(mbclient_)) return data;
+	NaiweiRobot::CsType ans = NaiweiRobot::CsType::Jcs;
+	if (-1 == modbus_get_socket(mbclient_)) return ans;
 
 	auto reg = NaiweiRemoteApiTool::AddressConvert(NaiweiRobot::Address::CsType);
+	auto data = static_cast<uint16_t>(ans);
 	auto res = modbus_read_registers(mbclient_, reg[0], 1, &data);
 
-	return -1 == res ? NaiweiRobot::CsType::Jcs : data;
+	return -1 == res ? NaiweiRobot::CsType::Jcs : static_cast<NaiweiRobot::CsType>(data);
 }
 
 float* NaiweiRemoteApiLib::GetCurJPos()
@@ -391,7 +391,7 @@ bool NaiweiRemoteApiLib::SetPos(NaiweiRobot::VarType type, uint16_t index, float
 	reg = NaiweiRemoteApiTool::AddressConvert(NaiweiRobot::Address::RemotePosMod);
 	res = modbus_read_registers(mbclient_, reg[0], 1, data);//借用data[0]重赋值，懒得再new中间变量了
 	NaiweiRemoteApiTool::SetBit(data, reg[1], true);
-	res = modbus_write_register(mbclient_, reg[0], *data);
+	res = modbus_write_register(mbclient_, reg[0], data);
 
 	return true;
 }
@@ -429,8 +429,8 @@ bool NaiweiRemoteApiLib::SetIo(uint16_t index, bool* value, NaiweiRobot::IOType 
 	auto num = sizeof(value) / sizeof(bool);
 	auto reg = NaiweiRemoteApiTool::AddressConvert(NaiweiRobot::Address::DigOut);
 	reg[0] += (index >> 1);
-	const int regnum = (int)(ceilf((index + num) * 0.5) - floorf(index * 0.5));
-	uint16_t data[regnum];
+	int regnum = (int)(ceilf((index + num) * 0.5) - floorf(index * 0.5));
+	uint16_t* data = new uint16_t[regnum];
 	auto res = modbus_read_registers(mbclient_, reg[0], regnum, data);
 
 	bool ans[sizeof(data) / sizeof(bool)];
@@ -440,14 +440,14 @@ bool NaiweiRemoteApiLib::SetIo(uint16_t index, bool* value, NaiweiRobot::IOType 
 	res = NaiweiRemoteApiTool::T2Ushort<bool>(ans, data);
 
 	res = modbus_write_registers(mbclient_, reg[0], regnum, data);
+	free(data);
 
 	return true;
 }
 
 bool* NaiweiRemoteApiLib::GetIo(NaiweiRobot::IOType type, uint16_t index, uint16_t num, bool* sign)
 {
-	const int len = num;
-	bool ans[len];
+	bool ans[num];//TODO:语法错误
 	if (-1 == modbus_get_socket(mbclient_)) return ans;
 
 	NaiweiRobot::Address address;
@@ -459,12 +459,13 @@ bool* NaiweiRemoteApiLib::GetIo(NaiweiRobot::IOType type, uint16_t index, uint16
 	}
 	auto reg = NaiweiRemoteApiTool::AddressConvert(address);
 	reg[0] += (index >> 1);
-	const int regnum = (int)(ceilf((index + num) * 0.5) - floorf(index * 0.5));
-	uint16_t data[regnum];
+	int regnum = (int)(ceilf((index + num) * 0.5) - floorf(index * 0.5));
+	uint16_t* data = new uint16_t[regnum];
 	auto res = modbus_read_registers(mbclient_, reg[0], regnum, data);
 
 	bool tmp[sizeof(data) / sizeof(bool)];
 	res = NaiweiRemoteApiTool::Ushort2T<bool>(data, tmp);
+	free(data);
 
 	memcpy(ans[index % 2], tmp, sizeof(tmp));
 
@@ -476,6 +477,7 @@ bool NaiweiRemoteApiLib::SetFixDo(int* indexs, bool value = true)
 	if (-1 == modbus_get_socket(mbclient_)) return false;
 	int num = sizeof(indexs) / sizeof(bool);
 
+	//TODO:替换为更高效现代的循环
 	for (int i = 0; i < num; i++)
 	{
 		auto reg = NaiweiRemoteApiTool::AddressConvert(NaiweiRobot::Address::DigOut);
@@ -497,8 +499,8 @@ bool NaiweiRemoteApiLib::SetFixDo(int* indexs, bool value = true)
 
 bool* NaiweiRemoteApiLib::GetFixDo(int* index, bool* sign)
 {
-	const int len = num;
-	bool ans[len];
+	const int num = sizeof(index)/sizeof(int);
+	bool ans[num];
 	if (-1 == modbus_get_socket(mbclient_)) return ans;
 
 	for (int i = 0; i < num; i++)
@@ -524,8 +526,8 @@ bool NaiweiRemoteApiLib::SetBool(uint16_t index, bool* value, NaiweiRobot::Scope
 	auto num = sizeof(value) / sizeof(bool);
 	auto reg = NaiweiRemoteApiTool::AddressConvert(NaiweiRobot::Address::VarGB);
 	reg[0] += (index >> 1);
-	const int regnum = (int)(ceilf((index + num) * 0.5) - floorf(index * 0.5));
-	uint16_t data[regnum];
+	int regnum = (int)(ceilf((index + num) * 0.5) - floorf(index * 0.5));
+	uint16_t* data = new uint16_t[regnum];
 	auto res = modbus_read_registers(mbclient_, reg[0], regnum, data);
 
 	bool ans[sizeof(data) / sizeof(bool)];
@@ -535,24 +537,25 @@ bool NaiweiRemoteApiLib::SetBool(uint16_t index, bool* value, NaiweiRobot::Scope
 	res = NaiweiRemoteApiTool::T2Ushort<bool>(ans, data);
 
 	res = modbus_write_registers(mbclient_, reg[0], regnum, data);
+	free(data);
 
 	return true;
 }
 
 bool* NaiweiRemoteApiLib::GetBool(uint16_t index, uint16_t num, bool* sign, NaiweiRobot::ScopeType scope)
 {
-	const int len = num;
-	bool ans[len];
+	bool ans[num];//TODO:语法错误
 	if (-1 == modbus_get_socket(mbclient_)) return ans;
 
 	auto reg = NaiweiRemoteApiTool::AddressConvert(NaiweiRobot::Address::VarGB);
 	reg[0] += (index >> 1);
-	const int regnum = (int)(ceilf((index + num) * 0.5) - floorf(index * 0.5));
-	uint16_t data[regnum];
+	int regnum = (int)(ceilf((index + num) * 0.5) - floorf(index * 0.5));
+	uint16_t* data = new uint16_t[regnum];
 	auto res = modbus_read_registers(mbclient_, reg[0], regnum, data);
 
 	bool tmp[sizeof(data) / sizeof(bool)];
 	res = NaiweiRemoteApiTool::Ushort2T<bool>(data, tmp);
+	free(data);
 
 	memcpy(ans[index % 2], tmp, sizeof(tmp));
 
@@ -575,8 +578,7 @@ bool NaiweiRemoteApiLib::SetInt(uint16_t index, int16_t* value, NaiweiRobot::Sco
 
 int16_t* NaiweiRemoteApiLib::GetInt(uint16_t index, uint16_t num, bool* sign, NaiweiRobot::ScopeType scope)
 {	
-	const int len = num;
-	int16_t ans[len];
+	int16_t ans[num];//TODO:语法错误
 	if (-1 == modbus_get_socket(mbclient_)) return ans;
 
 	auto reg = NaiweiRemoteApiTool::AddressConvert(NaiweiRobot::Address::VarGI);
@@ -604,8 +606,7 @@ bool NaiweiRemoteApiLib::SetReal(uint16_t index, float* value, NaiweiRobot::Scop
 
 float* NaiweiRemoteApiLib::GetReal(uint16_t index, uint16_t num, bool* sign, NaiweiRobot::ScopeType scope)
 {
-	const int len = num;
-	float ans[len];
+	float ans[num];//TODO:语法错误
 	if (-1 == modbus_get_socket(mbclient_)) return ans;
 
 	auto reg = NaiweiRemoteApiTool::AddressConvert(NaiweiRobot::Address::VarGF);
